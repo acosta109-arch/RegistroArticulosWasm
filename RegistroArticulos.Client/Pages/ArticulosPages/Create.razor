@@ -1,0 +1,128 @@
+﻿@page "/Create/Articulos"
+@inject NavigationManager navigation
+@inject HttpClient httpClient
+
+<PageTitle>Crear nuevo articulo</PageTitle>
+<EditForm Model="articulos" OnValidSubmit="Crear">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="container">
+        <div class="card shadow-lg">
+            @*Header*@
+            <div class="card-header bg-secondary text-white">
+                <h1><strong>Crear nuevo art&iacute;culo</strong></h1>
+            </div>
+            @*Body*@
+            <div class="card-body">
+                @*Datos*@
+                <label for="id" class="form-label"><strong>Art&iacute;culoId</strong></label>
+                <InputNumber id="id" class="form-control" @bind-Value="articulos.ArticuloId" readonly></InputNumber>
+
+                <label for="descripcion" class="form-label"><strong>Descripci&oacute;n</strong></label>
+                <InputText id="descripcion" class="form-control" @bind-Value="articulos.Descripcion"></InputText>
+                <ValidationMessage For="@(() => articulos.Descripcion)" />
+
+                <label for="costo" class="form-label"><strong>Costo</strong></label>
+                <InputNumber id="costo" class="form-control" @bind-Value="articulos.Costo" @oninput="CalcularPrecio"></InputNumber>
+                <ValidationMessage For="@(() => articulos.Costo)" />
+
+                <label for="ganancia" class="form-label"><strong>Ganancia</strong></label>
+                <InputNumber id="ganancia" class="form-control" @bind-Value="articulos.Ganancia" @oninput="CalcularPrecio"></InputNumber>
+                <ValidationMessage For="@(() => articulos.Ganancia)" />
+
+                <label for="precio" class="form-label"><strong>Precio</strong></label>
+                <InputNumber id="precio" class="form-control" @bind-Value="articulos.Precio" readonly></InputNumber>
+                <ValidationMessage For="@(() => articulos.Precio)" />
+            </div>
+            @*Footer*@
+            <div class="card-footer">
+                <button type="button" class="btn btn-primary" @onclick="Volver"><Icon Name="IconName.Arrow90DegLeft"></Icon> Volver</button>
+                <button type="submit" class="btn btn-success"><Icon Name="IconName.Floppy"></Icon> Guardar</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
+}
+
+@code {
+    public Articulos articulos { get; set; } = new Articulos();
+    public string errorMessage { get; set; }
+
+    public async Task<bool> Validar()
+    {
+        try
+        {
+            var articulosExistentes = await httpClient.GetFromJsonAsync<List<Articulos>>("api/Articulos");
+            return articulosExistentes.Any(a => a.Descripcion.Equals(articulos.Descripcion, StringComparison.OrdinalIgnoreCase));
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al validar artículos: {ex.Message}";
+            return false;
+        }
+    }
+
+
+    public async Task Crear()
+    {
+        errorMessage = string.Empty;
+
+        if (articulos.Precio <= 1)
+        {
+            errorMessage = "Error, el precio tiene que ser mayor a 1.";
+            return;
+        }
+
+        if (articulos.Precio <= articulos.Costo)
+        {
+            errorMessage = "Error, el precio tiene que ser mayor que el costo.";
+            return;
+        }
+
+        bool articuloExistente = await Validar();
+
+        if (articuloExistente)
+        {
+            errorMessage = "El artículo con la misma descripción ya existe.";
+            return;
+        }
+
+        try
+        {
+            var response = await httpClient.PostAsJsonAsync("api/Articulos", articulos);
+            if (response.IsSuccessStatusCode)
+            {
+                articulos = new Articulos();
+                errorMessage = null; // Limpiar el mensaje de error
+                navigation.NavigateTo("/Index/Articulos");
+            }
+            else
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                errorMessage = $"Error al guardar artículo: {content}";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al guardar artículo: {ex.Message}";
+        }
+    }
+
+
+    private void CalcularPrecio()
+    {
+        articulos.Precio = (articulos.Costo * articulos.Ganancia / 100) + articulos.Costo;
+        StateHasChanged();
+    }
+
+    public void Volver()
+    {
+        navigation.NavigateTo("/Index/Articulos");
+    }
+}
