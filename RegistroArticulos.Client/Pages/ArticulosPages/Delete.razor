@@ -47,7 +47,7 @@
     protected override async Task OnInitializedAsync()
     {
         if (articulosId > 0)
-        {
+        { 
             articulos = await httpClient.GetFromJsonAsync<Articulos>($"api/Articulos/{articulosId}");
         }
     }
