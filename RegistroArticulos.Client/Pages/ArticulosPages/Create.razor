@@ -51,7 +51,7 @@
 }
 
 @code {
-    public Articulos articulos { get; set; } = new Articulos();
+    public Articulos articulos = new Articulos();
     public string errorMessage { get; set; }
 
     public async Task<bool> Validar()
@@ -95,7 +95,7 @@
 
         try
         {
-            var response = await httpClient.PostAsJsonAsync("api/Articulos", articulos);
+            var response = await httpClient.PostAsJsonAsync("api/Articulos", this.articulos);
             if (response.IsSuccessStatusCode)
             {
                 articulos = new Articulos();
