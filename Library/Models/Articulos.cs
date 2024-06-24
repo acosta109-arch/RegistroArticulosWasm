@@ -18,6 +18,6 @@ public class Articulos
     [Range(1, 200000, ErrorMessage = "Favor de digitar la ganancia del articulo.")]
     public decimal Ganancia { get; set; }
 
-    public decimal Precio { get; set; }
+    public decimal Precio { get; set; } 
 
 }
