@@ -23,11 +23,11 @@
                 <ValidationMessage For="@(() => articulos.Descripcion)" />
 
                 <label for="costo" class="form-label"><strong>Costo</strong></label>
-                <InputNumber id="costo" class="form-control" @bind-Value="articulos.Costo" @oninput="CalcularPrecio"></InputNumber>
+                <InputNumber id="costo" class="form-control" @bind-Value="articulos.Costo" @onblur="CalcularPrecio"></InputNumber>
                 <ValidationMessage For="@(() => articulos.Costo)" />
 
-                <label for="ganancia" class="form-label"><strong>Ganancia</strong></label>
-                <InputNumber id="ganancia" class="form-control" @bind-Value="articulos.Ganancia" @oninput="CalcularPrecio"></InputNumber>
+                <label for="ganancia" class="form-label"><strong>Ganancia (%)</strong></label>
+                <InputNumber id="ganancia" class="form-control" @bind-Value="articulos.Ganancia" @onblur="CalcularPrecio"></InputNumber>
                 <ValidationMessage For="@(() => articulos.Ganancia)" />
 
                 <label for="precio" class="form-label"><strong>Precio</strong></label>
@@ -36,23 +36,18 @@
             </div>
             @*Footer*@
             <div class="card-footer">
-                <button type="button" class="btn btn-primary" @onclick="Volver"><Icon Name="IconName.Arrow90DegLeft"></Icon> Volver</button>
-                <button type="submit" class="btn btn-success"><Icon Name="IconName.Floppy"></Icon> Guardar</button>
+                <button type="button" class="btn btn-primary bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
+                <button type="submit" class="btn btn-success bi bi-floppy-fill"> Guardar</button>
             </div>
+            @Mensaje
         </div>
     </div>
 </EditForm>
 
-@if (!string.IsNullOrEmpty(errorMessage))
-{
-    <div class="alert alert-danger" role="alert">
-        @errorMessage
-    </div>
-}
 
 @code {
     public Articulos articulos = new Articulos();
-    public string errorMessage { get; set; }
+    public string Mensaje { get; set; }
 
     public async Task<bool> Validar()
     {
@@ -63,7 +58,7 @@
         }
         catch (Exception ex)
         {
-            errorMessage = $"Error al validar artículos: {ex.Message}";
+            Mensaje = $"Error al validar artículos: {ex.Message}";
             return false;
         }
     }
@@ -71,17 +66,17 @@
 
     public async Task Crear()
     {
-        errorMessage = string.Empty;
+        Mensaje = string.Empty;
 
         if (articulos.Precio <= 1)
         {
-            errorMessage = "Error, el precio tiene que ser mayor a 1.";
+            Mensaje = "Error, el precio tiene que ser mayor a 1.";
             return;
         }
 
         if (articulos.Precio <= articulos.Costo)
         {
-            errorMessage = "Error, el precio tiene que ser mayor que el costo.";
+            Mensaje = "Error, el precio tiene que ser mayor que el costo.";
             return;
         }
 
@@ -89,7 +84,7 @@
 
         if (articuloExistente)
         {
-            errorMessage = "El artículo con la misma descripción ya existe.";
+            Mensaje = "El artículo con la misma descripción ya existe.";
             return;
         }
 
@@ -99,18 +94,19 @@
             if (response.IsSuccessStatusCode)
             {
                 articulos = new Articulos();
-                errorMessage = null; // Limpiar el mensaje de error
+                Mensaje = null;
+                Mensaje = "El artículo a sido creado correctamente.";
                 navigation.NavigateTo("/Index/Articulos");
             }
             else
             {
                 var content = await response.Content.ReadAsStringAsync();
-                errorMessage = $"Error al guardar artículo: {content}";
+                Mensaje = $"Error al guardar artículo: {content}";
             }
         }
         catch (Exception ex)
         {
-            errorMessage = $"Error al guardar artículo: {ex.Message}";
+            Mensaje = $"Error al guardar artículo: {ex.Message}";
         }
     }
 

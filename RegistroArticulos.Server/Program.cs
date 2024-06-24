@@ -24,11 +24,9 @@ namespace RegistroArticulos.Server
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            }
+            
 
             //LINEAS NUEVAS PARA ACTIVAR EL CORD
             app.UseCors(options =>

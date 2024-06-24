@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "Library\Library.csproj", "{5E8A181E-39F8-48B3-8B2C-31C60B378B66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library", "Library\Library.csproj", "{5E8A181E-39F8-48B3-8B2C-31C60B378B66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistroArticulos.Client", "RegistroArticulos.Client\RegistroArticulos.Client.csproj", "{72C64DF4-2734-415A-A28D-596371CB89AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistroArticulos.Client", "RegistroArticulos.Client\RegistroArticulos.Client.csproj", "{72C64DF4-2734-415A-A28D-596371CB89AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistroArticulos.Server", "RegistroArticulos.Server\RegistroArticulos.Server.csproj", "{9921A89D-909D-45ED-8523-F55BF6C550C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistroArticulos.Server", "RegistroArticulos.Server\RegistroArticulos.Server.csproj", "{9921A89D-909D-45ED-8523-F55BF6C550C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -6,7 +6,6 @@
 <PageTitle>Modificar nuevo art&iacute;culo</PageTitle>
 <EditForm Model="articulos" OnValidSubmit="Modificar">
     <DataAnnotationsValidator />
-    <Toasts class="p-3" Messages="MensajeToast" Placement="ToastsPlacement.TopRight" />
     <div class="container">
         <div class="card shadow-lg">
             @*Header*@
@@ -37,10 +36,11 @@
             </div>
             @*Footer*@
             <div class="card-footer">
-                <button type="button" class="btn btn-primary" @onclick="Volver"><Icon Name="IconName.Arrow90DegLeft"></Icon> Volver</button>
-                <button type="submit" class="btn btn-success"><Icon Name="IconName.Pencil"></Icon> Guardar</button>
+                <button type="button" class="btn btn-primary bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
+                <button type="submit" class="btn btn-success bi bi-floppy-fill"> Guardar</button>
             </div>
         </div>
+        @Mensaje
     </div>
 </EditForm>
 
@@ -48,8 +48,8 @@
     [Parameter]
     public int articulosId { get; set; }
     public Articulos articulos { get; set; } = new Articulos();
-   // public List<ToastMessage> MensajeToast { get; set; } = new List<ToastMessage>();
     public bool Repetida { get; set; }
+    public string Mensaje { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -68,13 +68,13 @@
     {
         if (articulos.Precio <= 1)
         {
-          //  Mensaje(ToastType.Danger, "Error, el precio tiene que ser mayor a 1.");
+            Mensaje = "Error, el precio tiene que ser mayor a 1.";
             return;
         }
 
         if (articulos.Precio <= articulos.Costo)
         {
-         //   Mensaje(ToastType.Danger, "Error, el precio tiene que ser mayor que el costo.");
+            Mensaje = "Error, el precio tiene que ser mayor que el costo.";
             return;
         }
 
@@ -83,17 +83,17 @@
             var response = await httpClient.PutAsJsonAsync($"api/Articulos/{articulos.ArticuloId}", articulos);
             if (response.IsSuccessStatusCode)
             {
-               // Mensaje(ToastType.Success, "Artículo modificado correctamente.");
+                Mensaje = "El artículo a sido modificado correctamente.";
                 articulos = new Articulos();
             }
             else
             {
-               // Mensaje(ToastType.Danger, "El artículo no pudo ser modificado.");
+                Mensaje = "El artículo no pudo se modificado.";
             }
         }
         else
         {
-            //Mensaje(ToastType.Danger, "El artículo no pudo ser modificado.");
+            Mensaje = "El artículo no pudo se modificado.";
         }
     }
 
@@ -102,20 +102,6 @@
         articulos.Precio = (articulos.Costo * articulos.Ganancia / 100) + articulos.Costo;
         StateHasChanged();
     }
-
-    /*private ToastMessage CreateToastMessage(ToastType toastType, string mensaje)
-    => new ToastMessage
-    {
-        Type = toastType,
-        Title = "Notificación",
-        HelpText = $"{DateTime.Now}",
-        Message = mensaje,
-    };
-
-    private void Mensaje(ToastType toastType, string mensaje)
-    {
-        MensajeToast.Add(CreateToastMessage(toastType, mensaje));
-    }*/
 
     public void Volver()
     {

@@ -1,0 +1,56 @@
+﻿@page "/Details/Articulos/{articulosId:int}"
+@page "/Details/Articulos"
+@inject NavigationManager navigation
+@inject HttpClient httpClient
+
+<PageTitle>Detalles del art&iacute;culo</PageTitle>
+<EditForm Model="articulos">
+    <DataAnnotationsValidator />
+    <div class="container">
+        <div class="card shadow-lg">
+            <div class="card-header bg-secondary text-white">
+                <h4><strong>Detalles del art&iacute;culo</strong></h4>
+            </div>
+            <div class="card-body">
+                <div class="mb-1">
+                    <p class="mb-0"><strong>Art&iacute;culoId:</strong> @articulos.ArticuloId</p>
+                </div>
+                <div class="mb-1">
+                    <p class="mb-0"><strong>Descripci&oacute;n:</strong> @articulos.Descripcion</p>
+                </div>
+                <div class="mb-1">
+                    <p class="mb-0"><strong>Costo:</strong> @articulos.Costo</p>
+                </div>
+                <div class="mb-1">
+                    <p class="mb-0"><strong>Ganancia:</strong> @articulos.Ganancia</p>
+                </div>
+                <div class="mb-1">
+                    <p class="mb-0"><strong>Precio:</strong> @articulos.Precio</p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="button" class="btn btn-primary bi bi-arrow-90deg-left" @onclick="Volver"> Volver</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int articulosId { get; set; }
+    public Articulos articulos { get; set; } = new Articulos();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (articulosId > 0)
+        {
+            articulos = await httpClient.GetFromJsonAsync<Articulos>($"api/Articulos/{articulosId}");
+        }
+    }
+
+    public void Volver()
+    {
+        navigation.NavigateTo("/Index/Articulos");
+    }
+}
+

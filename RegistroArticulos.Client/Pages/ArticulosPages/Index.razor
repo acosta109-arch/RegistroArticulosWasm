@@ -22,13 +22,13 @@
                     <label for="ValorFiltro" class="form-label"><strong>Búsqueda: </strong></label>
                     <div class="input-group">
                         <input @bind="ValorFiltro" id="ValorFiltro" class="form-control" placeholder="Buscar" />
-                        <button type="button" class="btn btn-primary" @onclick="Buscar"><Icon Name="IconName.Search"></Icon> Buscar</button>
+                        <button type="button" class="btn btn-primary bi bi-search" @onclick="Buscar"> Buscar</button>
                     </div>
                 </div>
             </div>
         </div>
         <div>
-            <a href="/Create/Articulos" class="btn btn-success"><Icon Name="IconName.Plus"></Icon> Nuevo</a>
+            <a href="/Create/Articulos" class="btn btn-success bi bi-plus-circle-fill"> Nuevo</a>
         </div>
         <div class="card-body">
             <table class="table table-light">
@@ -39,6 +39,7 @@
                         <th>Costo</th>
                         <th>Ganancia</th>
                         <th>Precio</th>
+                        <th>Detalles</th>
                         <th>Modificar</th>
                         <th>Eliminar</th>
                     </tr>
@@ -53,10 +54,13 @@
                             <td>@articulo.Ganancia</td>
                             <td>@articulo.Precio</td>
                             <td class="text-center">
-                                <a href="/Edit/Articulos/@articulo.ArticuloId" class="btn btn-primary"><Icon Name="IconName.Pencil"></Icon> Modificar</a>
+                                <a href="/Details/Articulos/@articulo.ArticuloId" class="btn btn-warning bi bi-eye-fill"> Detalles</a>
                             </td>
                             <td class="text-center">
-                                <a href="/Delete/Articulos/@articulo.ArticuloId" class="btn btn-danger"><Icon Name="IconName.Trash"></Icon> Eliminar</a>
+                                <a href="/Edit/Articulos/@articulo.ArticuloId" class="btn btn-primary bi bi-pen-fill"> Modificar</a>
+                            </td>
+                            <td class="text-center">
+                                <a href="/Delete/Articulos/@articulo.ArticuloId" class="btn btn-danger bi bi-trash-fill"> Eliminar</a>
                             </td>
                         </tr>
                     }
