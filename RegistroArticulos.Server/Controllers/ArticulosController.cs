@@ -102,7 +102,7 @@ namespace RegistroArticulos.Server.Controllers
 
         private bool ArticulosExists(int id)
         {
-            return _context.Articulos.Any(e => e.ArticuloId == id);
+            return _context.Articulos.Any(e => e.ArticuloId == id); 
         }
     }
 }
