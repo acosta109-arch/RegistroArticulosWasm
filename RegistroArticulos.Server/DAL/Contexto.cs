@@ -10,6 +10,6 @@ namespace RegistroArticulos.Server.DAL
 
         }
 
-        public DbSet<Articulos> Articulos { get; set; }
+        public DbSet<Articulos> Articulos { get; set; } 
     }
 }
