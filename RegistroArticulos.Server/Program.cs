@@ -25,7 +25,7 @@ namespace RegistroArticulos.Server
 
             // Configure the HTTP request pipeline.
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(); 
             
 
             //LINEAS NUEVAS PARA ACTIVAR EL CORD
